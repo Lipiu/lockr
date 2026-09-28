@@ -34,7 +34,7 @@ public class RegisterService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
 
         try{

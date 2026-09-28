@@ -1,10 +1,11 @@
 package com.restapi.backend.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.restapi.backend.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,8 @@ public class AppUserDetailsService implements UserDetailsService{
 
        return User
        .withUsername(user.getEmail())
-       .password(user.getPasswordHash())
+       .password(user.getPassword())
        .authorities("USER")
        .build();
     }
-
-
 }
