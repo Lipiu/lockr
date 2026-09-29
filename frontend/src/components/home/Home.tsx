@@ -6,10 +6,16 @@ function Home(){
     const navigateToLogIn = () => {
         navigate("/login")
     }
+
+    const navigateToRegister = () => {
+        navigate("/register");
+    }
+
     return (
         <div>
             <h1>Home Page</h1>
-            <button onClick={navigateToLogIn}>Go to sign in page</button>
+            <button className="login-btn" onClick={navigateToLogIn}>Go to login page</button>
+            <button className="register-btn" onClick={navigateToRegister}>Go to register</button>
         </div>
     );
 }

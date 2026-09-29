@@ -11,11 +11,12 @@ function Login(){
         
         const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const res = await fetch("http://localhost:8080/login", {
+            const res = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
-                body: new URLSearchParams({
-                    username: email, password
-                }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password }),
                 credentials: "include",
             });
             if(res.ok)
@@ -28,6 +29,10 @@ function Login(){
         navigate('/');
     };
 
+    const navigateToRegister = () => {
+        navigate("/register");
+    }
+
     return (
         <div className="login-page">
             <form className="auth-info" onSubmit={handleSubmit}>
@@ -38,10 +43,12 @@ function Login(){
                 <label>
                     Password: <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </label>
-                    <button className="secretBtn" type="submit">Sign in</button>
+                    <button className="login-btn" type="submit">Log in</button>
             </form>
             {error && <p>{error}</p>}
             <button className="homeBtn" onClick={navigateHome}>Home</button>
+            <p>Don't have an account?</p>
+            <button onClick={navigateToRegister}>Register here!</button>
         </div>
     );
 }
