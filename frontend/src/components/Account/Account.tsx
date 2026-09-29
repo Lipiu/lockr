@@ -24,14 +24,6 @@ function Account(){
         checkAuth();
     }, []);
 
-    const navigateToLogin = () => {
-        navigate('/login');
-    }
-
-    const navigateToHomePage = () => {
-        navigate("/");
-    }
-
     if(loading){
         return <p>Loading...</p>
     }
@@ -39,14 +31,14 @@ function Account(){
         return (
         <div>
             <p>Not logged in</p>
-            <button onClick={navigateToLogin}>Go to login</button>
+            <button onClick={() => navigate("/login")}>Go to login</button>
         </div>
     )
     }
     return (
         <div>
             <p>Welcome, {user.email}</p>
-            <button onClick={navigateToHomePage}>Home</button>
+            <button onClick={() => navigate("/")}>Home</button>
         </div>
     )
 }

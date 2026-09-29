@@ -25,14 +25,6 @@ function Login(){
                 setError("Wrong email or password");
         }
 
-    const navigateHome = () => {
-        navigate('/');
-    };
-
-    const navigateToRegister = () => {
-        navigate("/register");
-    }
-
     return (
         <div className="login-page">
             <form className="auth-info" onSubmit={handleSubmit}>
@@ -46,9 +38,9 @@ function Login(){
                     <button className="login-btn" type="submit">Log in</button>
             </form>
             {error && <p>{error}</p>}
-            <button className="homeBtn" onClick={navigateHome}>Home</button>
+            <button className="homeBtn" onClick={() => navigate("/")}>Home</button>
             <p>Don't have an account?</p>
-            <button onClick={navigateToRegister}>Register here!</button>
+            <button onClick={() => navigate("/register")}>Register here!</button>
         </div>
     );
 }
