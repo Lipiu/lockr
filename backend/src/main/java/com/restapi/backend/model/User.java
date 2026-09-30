@@ -26,6 +26,12 @@ public class User {
     @Column(name="id", nullable=false)
     private UUID id;
 
+    @Column(name="first_name", nullable=false, updatable=true)
+    private String firstName;
+
+    @Column(name="last_name", nullable=false, updatable=true)
+    private String lastName;
+
     @Column(name="email", nullable=false, updatable=true, unique=true)
     private String email;
 

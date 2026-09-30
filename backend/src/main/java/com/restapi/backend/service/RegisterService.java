@@ -25,7 +25,10 @@ public class RegisterService {
 
     @Transactional
     public User register(RegisterRequest registerRequest){
+        String firstName = registerRequest.getFirstName().trim();
+        String lastName = registerRequest.getLastName().trim();
         String email = registerRequest.getEmail().toLowerCase().trim();
+
         if(userRepository.existsByEmail(email)){
             throw new DuplicateEmailException(Constants.DUPLICATE_EMAIL_MESSAGE);
         }
@@ -33,6 +36,8 @@ public class RegisterService {
             throw new InvalidPasswordException("Password is too long");
         }
         User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(LocalDateTime.now());

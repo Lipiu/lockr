@@ -1,8 +1,10 @@
 import { useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Register(){
+function RegisterPage(){
     const navigate = useNavigate();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -14,7 +16,7 @@ function Register(){
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({email, password}),
+            body: JSON.stringify({firstName, lastName, email, password}),
             credentials: "include",
         });
         if(res.ok){
@@ -38,9 +40,17 @@ function Register(){
             <h1>Register Page</h1>
             <form className="auth-info" onSubmit={handleSubmit}>
                 <label>
-                    Email: <input value={email} onChange={(e) => setEmail(e.target.value)} />
+                    First Name: <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                 </label>
 
+                <label>
+                    Last Name: <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                </label>
+
+                <label>
+                    Email: <input value={email} onChange={(e) => setEmail(e.target.value)} />
+                </label>
+                
                 <label>
                     Password: <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </label>
@@ -56,4 +66,4 @@ function Register(){
 
 }
 
-export default Register;
+export default RegisterPage;

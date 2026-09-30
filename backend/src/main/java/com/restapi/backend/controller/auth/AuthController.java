@@ -24,6 +24,7 @@ import com.restapi.backend.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -60,6 +61,16 @@ public class AuthController {
         User user = registerService.register(registerRequest);
         UserDto userDto = userMapper.toDto(user);        
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<UserDto> logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            session.invalidate();
+        }
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/me")

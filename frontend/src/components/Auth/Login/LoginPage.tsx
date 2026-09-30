@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import "./Login.css"
+import "./LoginPage.css"
 import { useState } from "react";
 import type { SyntheticEvent } from "react";
 
-function Login(){
+function LoginPage(){
         const navigate = useNavigate();
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
@@ -19,8 +19,9 @@ function Login(){
                 body: JSON.stringify({ email, password }),
                 credentials: "include",
             });
-            if(res.ok)
-                navigate("/account")
+            if(res.ok){
+                navigate("/");
+            }
             else
                 setError("Wrong email or password");
         }
@@ -45,4 +46,4 @@ function Login(){
     );
 }
 
-export default Login;
+export default LoginPage;

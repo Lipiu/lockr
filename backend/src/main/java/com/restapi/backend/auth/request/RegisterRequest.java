@@ -10,6 +10,14 @@ import lombok.ToString;
 
 @Data
 public class RegisterRequest {
+    @NotBlank(message = "First name cannot be blank")
+    @Size(max = Constants.NAME_MAX_LENGTH, message = "Name max size allowed: " + Constants.NAME_MAX_LENGTH)
+    private String firstName;
+
+    @NotBlank(message = "Last name cannot be blank")
+    @Size(max = Constants.NAME_MAX_LENGTH, message = "Name max size allowed: " + Constants.NAME_MAX_LENGTH)
+    private String lastName;
+
     @Email(message = "Must be a well-formed email address")
     @NotBlank(message = "Email must not be blank")
     @Size(max = Constants.EMAIL_MAX_LENGTH, message = "Email max allowed: " + Constants.EMAIL_MAX_LENGTH)
