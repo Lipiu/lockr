@@ -1,5 +1,8 @@
 # TO DO
 
+### De rezolvat
+partea cu Hello [user] sau daca este logged out sa scrie [you are logged out]
+
 ### Features to be implemented (37.5% / 100%)
 + ~~register page (account creation)~~
 + ~~login page~~
