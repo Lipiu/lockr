@@ -5,7 +5,7 @@ import LiveTime from "../LiveTime/LiveTime";
 
 function Home(){
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(null);
 
     useEffect(() => {
         async function loadUser(){
@@ -17,7 +17,7 @@ function Home(){
                 setUsername(data.firstName);
             }
             else{
-                setUsername("");
+                setUsername(null);
             }
         }
         loadUser();
@@ -28,15 +28,26 @@ function Home(){
             method: "POST",
             credentials: "include"
         });
-        setUsername("");
+        setUsername(null);
     }
+
+    function capitalizeFirstLetter(str: string | null) {
+        if(!str){
+            return "";
+        }
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    const capitalizedUsername = capitalizeFirstLetter(username);
+
+    const isLoggedIn = username !== null;
 
     return (
         <div className="home-page">
             <header className="home-header">
-                <h1>Welcome {username}</h1>
+                <h1>Home Page</h1>
                 <div className="auth">
-                    {username === "" && (
+                    {!isLoggedIn && (
                         <>
                             <button className="login-btn" onClick={() => navigate("/login")}>
                                 Go to login page
@@ -47,7 +58,7 @@ function Home(){
                             </button>
                         </>
                     )}
-                    {username !== "" && (
+                    {isLoggedIn && (
                         <button className="logout-btn" onClick={handleLogout}>
                             Log out
                         </button>
@@ -56,7 +67,9 @@ function Home(){
             </header>
             <br/>
             <LiveTime></LiveTime>
-            <p>Hello, {username}</p>
+            <p>
+                {isLoggedIn ? `Hello, ${capitalizedUsername}!` : "You are logged out..."}
+            </p>
             <footer>
                 <p>Lockr - password storage made easy</p>
             </footer>
