@@ -11,8 +11,8 @@
 + password generator (maybe based on the C password generator from GitHub)
 
 ### Styling (0% / 100%)
-+ welcome page
-+ everything account and login related (register + login + account)
++ ~~welcome page~~
++ ~~everything account and login related (register + login + account)~~
 + password page
 
 ### Testing (0% / 100%)

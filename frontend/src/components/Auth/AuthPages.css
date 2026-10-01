@@ -1,0 +1,114 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background: white;
+  color: black;
+}
+
+.auth-card {
+  width: 300px;
+}
+
+.auth-card h1 {
+  margin: 0 0 32px;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  display: none;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-row {
+  display: flex;
+  gap: 16px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.auth-form input {
+  padding: 6px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  color: black;
+  transition: border-color 0.2s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-bottom-color: black;
+}
+
+.primary-btn {
+  margin-top: 8px;
+  padding: 10px;
+  color: white;
+  background: black;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  color: black;
+  background: white;
+}
+
+.auth-error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b00020;
+}
+
+.auth-footer {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.auth-footer p {
+  margin: 0;
+  padding: 0;
+}
+
+.link-btn {
+  padding: 0;
+  align-self: flex-start;
+  color: black;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  color: #666;
+}

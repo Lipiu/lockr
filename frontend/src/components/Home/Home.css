@@ -1,42 +1,77 @@
 .home-page {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  min-height: 100vh;
+  padding: 24px 32px 80px;
+  box-sizing: border-box;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: black;
+  background: white;
 }
 
 .home-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .home-header h1 {
-    margin: 0;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.home-greeting {
+  margin-top: 48px;
+}
+
+.home-greeting p {
+  margin: 8px 0 0;
+  color: gray;
 }
 
 button {
-    font-family: inherit;
+  font-family: inherit;
 }
 
-.auth button{
-    padding: 10px;
-    margin-left: 30px;
-    color: white;
-    background-color: black;
-    border: 3px solid lightblue;
-    border-radius: 20px;
-    transition: 0.4s;
+.auth {
+  display: flex;
+  gap: 12px;
 }
 
-.auth button:hover {
-    color: black;
-    background-color: white;
+.auth button {
+  padding: 8px 16px;
+  color: black;
+  background: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.auth button:hover,
+.auth button.filled {
+  color: white;
+  background: black;
+}
+
+.auth button.filled:hover {
+  color: black;
+  background: white;
 }
 
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    border-top: 2px solid black;
-    font-weight: bold;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  background: white;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+footer p {
+  margin: 0;
+  padding: 12px 0;
 }

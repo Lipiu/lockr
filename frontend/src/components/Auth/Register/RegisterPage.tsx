@@ -1,5 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import "../AuthPages.css";
 
 function RegisterPage(){
     const navigate = useNavigate();
@@ -11,20 +12,28 @@ function RegisterPage(){
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const res = await fetch("http://localhost:8080/api/auth/register", {
+        setError("");
+
+        try{
+            const res = await fetch("http://localhost:8080/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({firstName, lastName, email, password}),
             credentials: "include",
-        });
-        if(res.ok){
-            navigate("/login");
+            });
+            if(res.ok){
+                navigate("/login");
+            }
+            else{
+                setError("Could not create account");
+            }
         }
-        else{
-            setError("invalid credentials");
+        catch {
+            setError("Could not reach the server...");
         }
+        
     }
 
     const navigateToHomePage = () => {
@@ -35,34 +44,56 @@ function RegisterPage(){
         navigate("/login");
     }
 
-    return(
-        <div className="register-page">
-            <h1>Register Page</h1>
-            <form className="auth-info" onSubmit={handleSubmit}>
-                <label>
-                    First Name: <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                </label>
+   return (
+  <div className="auth-page">
+    <div className="auth-card">
+      <h1>Create account</h1>
+      <p className="auth-subtitle">Start storing your passwords safely</p>
 
-                <label>
-                    Last Name: <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                </label>
-
-                <label>
-                    Email: <input value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                
-                <label>
-                    Password: <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                </label>
-                    <button className="register-btn" type="submit">Create account</button>
-            </form>
-            {error && <p>{error}</p>}
-            
-            <button className="homeBtn" onClick={navigateToHomePage}>Home</button>
-            <p>Already have an account?</p>
-            <button onClick={navigateToLogin}>Go to login</button>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-row">
+          <label>
+            First name
+            <input required value={firstName}
+                   onChange={(e) => setFirstName(e.target.value)} />
+          </label>
+          <label>
+            Last name
+            <input required value={lastName}
+                   onChange={(e) => setLastName(e.target.value)} />
+          </label>
         </div>
-    )
+
+        <label>
+          Email
+          <input type="email" required value={email}
+                 onChange={(e) => setEmail(e.target.value)} />
+        </label>
+
+        <label>
+          Password
+          <input type="password" required value={password}
+                 onChange={(e) => setPassword(e.target.value)} />
+        </label>
+
+        {error && <p className="auth-error">{error}</p>}
+
+        <button className="primary-btn" type="submit">Create account</button>
+      </form>
+
+      <div className="auth-footer">
+        <p>Already have an account?</p>
+        <button className="link-btn" type="button" onClick={navigateToLogin}>
+          Go to login
+        </button>
+        <p></p>
+        <button className="link-btn" type="button" onClick={navigateToHomePage}>
+          ← Back to home
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 }
 
