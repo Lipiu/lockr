@@ -16,7 +16,7 @@ function Home(){
                 });
                 if(res.ok){
                     const data = await res.json();
-                    setUsername(data.firstName);
+                    setUsername(data.firstName + " " + data.lastName);
                 }
                 else{
                     setUsername(null);
@@ -42,13 +42,6 @@ function Home(){
         }
     }
 
-    function capitalizeFirstLetter(str: string | null){
-        if(!str){
-            return "";
-        }
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
     const isLoggedIn = username !== null;
 
     return (
@@ -70,7 +63,7 @@ function Home(){
 
             <main className="home-greeting">
                 <LiveTime />
-                {!loading && isLoggedIn && <p>// Hello, {capitalizeFirstLetter(username)}!</p>}
+                {!loading && isLoggedIn && <p>// Hello, {username}!</p>}
                 {!loading && !isLoggedIn && <p>You are logged out.</p>}
             </main>
 
