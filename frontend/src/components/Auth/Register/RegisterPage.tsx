@@ -1,6 +1,7 @@
 import { useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import "../AuthPages.css";
+import validator from "validator";
 
 function RegisterPage(){
     const navigate = useNavigate();
@@ -14,6 +15,13 @@ function RegisterPage(){
         e.preventDefault();
         setError("");
 
+        if(!verifyPasswordLength(password)){
+          return;
+        }
+        if(!verifyEmail(email)){
+          return;
+        }
+
         try{
             const res = await fetch("http://localhost:8080/api/auth/register", {
             method: "POST",
@@ -23,17 +31,37 @@ function RegisterPage(){
             body: JSON.stringify({firstName, lastName, email, password}),
             credentials: "include",
             });
-            if(res.ok){
-                navigate("/login");
+            if(res.status === 401){
+              setError("Email already exists.");
+              return;
             }
-            else{
-                setError("Could not create account");
+
+            if(!res.ok){
+              setError("Register failed. Please try again!");
+              return;
             }
+            navigate("/login");
+            
         }
         catch {
             setError("Could not reach the server...");
         }
-        
+    }
+
+    function verifyPasswordLength(password: string): boolean{
+      if(password.length < 12){
+        setError("Password too short, must be at least 12 characters");
+        return false;
+      }
+      return true;
+    }
+
+    function verifyEmail(email: string): boolean{
+      if(!validator.isEmail(email)){
+        setError("Please enter a valid email address.");
+        return false;
+      }
+      return true;
     }
 
     const navigateToHomePage = () => {
@@ -50,7 +78,7 @@ function RegisterPage(){
       <h1>Create account</h1>
       <p className="auth-subtitle">Start storing your passwords safely</p>
 
-      <form className="auth-form" onSubmit={handleSubmit}>
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
         <div className="auth-row">
           <label>
             First name
