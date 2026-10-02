@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { useEffect, useState } from "react";
 import LiveTime from "../LiveTime/LiveTime";
+import lockrLogo from '../../assets/lockrLogo.png';
+import PasswordGroup from "../PasswordGroup/PasswordGroup";
 
 function Home(){
     const navigate = useNavigate();
@@ -33,39 +35,58 @@ function Home(){
     }, []);
 
     async function handleLogout(){
-        const res = await fetch("http://localhost:8080/api/auth/logout", {
-            method: "POST",
-            credentials: "include"
-        });
-        if(res.ok){
-            setUsername(null);
+        try{
+            const res = await fetch("http://localhost:8080/api/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+            if(res.ok){
+                setUsername(null);
+            }
+        }
+        catch(error){
+            console.error("Logout failed: ", error);
         }
     }
 
-    const isLoggedIn = username !== null;
+    const isLoggedIn = username !== null && !loading;
 
     return (
         <div className="home-page">
             <header className="home-header">
-                <h1>Lockr Home Page</h1>
+                <img src={lockrLogo}/>
                 <div className="auth">
                     {!loading && !isLoggedIn && (
                         <>
-                            <button onClick={() => navigate("/login")}>Log in</button>
-                            <button className="filled" onClick={() => navigate("/register")}>Register</button>
+                            <button className="btn" onClick={() => navigate("/login")}>Log in</button>
+                            <button className="btn" onClick={() => navigate("/register")}>Register</button>
                         </>
                     )}
-                    {!loading && isLoggedIn && (
-                        <button onClick={handleLogout}>Log out</button>
+                    {isLoggedIn && (
+                        <button className="btn" onClick={handleLogout}>Log out</button>
                     )}
                 </div>
             </header>
 
             <main className="home-greeting">
                 <LiveTime />
-                {!loading && isLoggedIn && <p>// Hello, {username}!</p>}
-                {!loading && !isLoggedIn && <p>You are logged out.</p>}
+                {
+                    isLoggedIn ? (
+                        <p>// Hello, {username}!</p>
+                    ) : (
+                        <p>You are logged out.</p>
+                    )
+                }
             </main>
+            <>
+            {
+                isLoggedIn ? (
+                    <PasswordGroup/>
+                ) : (
+                    null
+                )
+            }
+            </>
 
             <footer>
                 <p>Lockr - password storage made easy</p>

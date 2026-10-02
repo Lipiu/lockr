@@ -1,0 +1,23 @@
+button {
+  font-family: inherit;
+}
+
+.btn {
+  padding: 8px 16px;
+  color: black;
+  background: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  color: white;
+  background: black;
+}
+
+.btn.small {
+  padding: 4px 4px;
+}

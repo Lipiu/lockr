@@ -12,14 +12,11 @@ function LiveTime(){
         return () => clearInterval(interval);
     }, []);
 
-    return <span>{time.toLocaleString("en-GB", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
+    return <span>{time.toLocaleDateString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
+
     })}</span>
 }
 
