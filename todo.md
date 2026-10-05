@@ -7,7 +7,6 @@
 + ability to store passwords
 + password groups based on categories (eg: games, websites, etc)
 + email account confirmation
-+ maybe phone message confirmation
 + password generator (maybe based on the C password generator from GitHub)
 
 ### Styling (0% / 100%)

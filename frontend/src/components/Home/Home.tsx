@@ -72,9 +72,9 @@ function Home(){
                 <LiveTime />
                 {
                     isLoggedIn ? (
-                        <p>// Hello, {username}!</p>
+                        <p>// Hello, {username}! \\</p>
                     ) : (
-                        <p>You are logged out.</p>
+                        <p>You are logged out...</p>
                     )
                 }
             </main>
