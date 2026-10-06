@@ -1,4 +1,4 @@
-package com.restapi.backend.dto;
+package com.restapi.backend.dto.response.password;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,5 +11,7 @@ public record EncryptedPasswordDto(
     @NonNull String title,
     String url,
     String notes,
-    @NonNull LocalDateTime createdAt
+    UUID groupId,
+    @NonNull LocalDateTime createdAt,
+    @NonNull LocalDateTime updatedAt
 ) {}

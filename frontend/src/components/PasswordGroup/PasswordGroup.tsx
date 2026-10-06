@@ -12,10 +12,19 @@ type Entry = {
     updatedAt: string;
 };
 
+type Group = {
+    id: string;
+    name: string;
+    parentId: string | null;
+};
+
 const API = "http://localhost:8080/api/password-entry";
+const GROUPS_API = "http://localhost:8080/api/groups";
 
 function PasswordGroup(){
     const [entries, setEntries] = useState<Entry[]>([]);
+    const [groups, setGroups] = useState<Group[]>([])
+    const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
     const [showForm, setShowForm] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [title, setTitle] = useState("");
@@ -25,9 +34,77 @@ function PasswordGroup(){
     const [notes, setNotes] = useState("");
     const [error, setError] = useState("");
 
+
+    //groups
+    async function loadGroups(){
+        try {
+            const res = await fetch(GROUPS_API, { credentials: "include" });
+            if(res.ok)
+                setGroups(await res.json());
+        }
+        catch {
+            setError("Could not reach the server");
+        }
+    }
+
+    async function handleAddGroup(){
+        const name = window.prompt("Group name");
+        if(name === null || name.trim() === ""){
+            return;
+        }
+        try{
+            const res = await fetch(GROUPS_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    name, parentId: selectedGroupId
+                }),
+            });
+            if(res.ok){
+                loadGroups();
+            }
+            else{
+                setError("Could not create group");
+            }
+        }
+        catch{
+            setError("Could not reach the server");
+        }
+    }
+
+    async function handleDeleteGroup(){
+        if(selectedGroupId === null){
+            return;
+        }
+        try {
+            const res = await fetch(`${GROUPS_API}/${selectedGroupId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+            if(res.ok){
+                setSelectedGroupId(null);
+                loadGroups();
+            }
+            else if(res.status === 409){
+                setError("Group is not empty");
+            }
+            else {
+                setError("Could not delete group");
+            }
+        }
+        catch {
+            setError("Could not reach the server");
+        }
+    }
+
+    //entries
     async function loadEntries(){
         try{
-            const res = await fetch(API, { credentials: "include" });
+            const url = selectedGroupId === null ? API : `${API}?groupId=${selectedGroupId}`;
+            const res = await fetch(url, { credentials: "include" });
             if(res.ok){
                 setEntries(await res.json());
             }
@@ -37,39 +114,7 @@ function PasswordGroup(){
         }
     }
 
-    useEffect(() => {
-        loadEntries();
-    }, []);
-
-    async function handleSubmit(e: SyntheticEvent<HTMLFormElement>){
-        e.preventDefault();
-        setError("");
-        try{
-            const res = await fetch(API, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ title, accountUsername, password, url, notes }),
-            });
-            if(res.ok){
-                setTitle("");
-                setAccountUsername("");
-                setPassword("");
-                setUrl("");
-                setNotes("");
-                setShowForm(false);
-                loadEntries();
-            }
-            else{
-                setError("Could not save entry");
-            }
-        }
-        catch{
-            setError("Could not reach the server");
-        }
-    }
-
-    async function handleDelete(){
+    async function handleEntryDelete(){
         if(selectedId === null)
             return;
         try {
@@ -90,6 +135,42 @@ function PasswordGroup(){
         }
     }
 
+    async function handleSubmit(e: SyntheticEvent<HTMLFormElement>){
+        e.preventDefault();
+        setError("");
+        try{
+            const res = await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ title, accountUsername, password, url, notes, groupId: selectedGroupId }),
+            });
+            if(res.ok){
+                setTitle("");
+                setAccountUsername("");
+                setPassword("");
+                setUrl("");
+                setNotes("");
+                setShowForm(false);
+                loadEntries();
+            }
+            else{
+                setError("Could not save entry");
+            }
+        }
+        catch{
+            setError("Could not reach the server");
+        }
+    }
+
+    useEffect(() => {
+        loadGroups();
+    }, []);
+
+    useEffect(() => {
+        loadEntries();
+    }, [selectedGroupId]);
+
     function verifyIfBlank(content: string | null){
         if(content === null || content.trim() === ""){
             return "Empty (Default)";
@@ -97,20 +178,45 @@ function PasswordGroup(){
         return content;
     }
 
+    function renderGroups(parentId: string | null, depth: number){
+        return groups
+            .filter(g => g.parentId === parentId)
+            .map(g => (
+                <div key={g.id}>
+                    <button
+                        className={"group-item" + (selectedGroupId === g.id ? " active" : "")}
+                        style={{paddingLeft: 12 + depth * 16}}
+                        onClick={() => setSelectedGroupId(g.id)}
+                    >
+                        {g.name}
+                    </button>
+                    {renderGroups(g.id, depth + 1)}
+                </div>
+            ));
+    }
+
     return (
         <div className="password-container">
             <div className="toolbar">
                 <button className="btn small" onClick={() => setShowForm(!showForm)}>+ Add Entry</button>
                 <button className="btn small">Update Entry</button>
-                <button className="btn small" onClick={handleDelete} disabled={selectedId === null}>- Remove Entry</button>
+                <button className="btn small" onClick={handleEntryDelete} disabled={selectedId === null}>- Remove Entry</button>
                 
-                <button className="btn small">+ Add Group</button>
+                <button className="btn small" onClick={handleAddGroup}>+ Add Group</button>
                 <button className="btn small">Update Group</button>
-                <button className="btn small">- Remove Group</button>
+                <button className="btn small" onClick={handleDeleteGroup} disabled={selectedGroupId === null}>- Remove Group</button>
+
+                {error && <span className="entry-error">{error}</span>}
             </div>
 
             <aside className="sidebar">
-                <p>Root</p>
+                <button
+                    className={"group-item" + (selectedGroupId === null ? " active" : "")}
+                    onClick={() => setSelectedGroupId(null)}
+                >
+                    All entries
+                </button>
+                {renderGroups(null, 0)}
             </aside>
 
             <div className="entries">

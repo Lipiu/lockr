@@ -55,6 +55,10 @@ public class EncryptedPassword {
     @Column(name="updated_at", nullable=false)
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private VaultGroup group;
+
     @PrePersist
     public void onCreate(){
         createdAt = LocalDateTime.now();

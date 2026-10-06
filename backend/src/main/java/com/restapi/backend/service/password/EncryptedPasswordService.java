@@ -4,14 +4,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.restapi.backend.dto.request.password.CreatePasswordRequest;
 import com.restapi.backend.exception.EntryNotFoundException;
 import com.restapi.backend.model.EncryptedPassword;
 import com.restapi.backend.model.User;
+import com.restapi.backend.model.VaultGroup;
 import com.restapi.backend.repository.EncryptedPasswordRepository;
-import com.restapi.backend.request.password.CreatePasswordRequest;
+import com.restapi.backend.repository.VaultGroupRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,10 +21,17 @@ import lombok.RequiredArgsConstructor;
 public class EncryptedPasswordService {
     private final EncryptedPasswordRepository encryptedPasswordRepository;
     private final EncryptionService encryptionService;
+    private final VaultGroupRepository vaultGroupRepository;
 
     @Transactional
     public EncryptedPassword createPassword(User user, CreatePasswordRequest request){
         EncryptedPassword entryPassword = new EncryptedPassword();
+        if(request.getGroupId() != null){
+            VaultGroup group = vaultGroupRepository
+                .findByIdAndUser(request.getGroupId(), user)
+                .orElseThrow(() -> new EntryNotFoundException("Entry not found"));
+            entryPassword.setGroup(group);   
+        }
         entryPassword.setUser(user);
         entryPassword.setTitle(request.getTitle());
         entryPassword.setAccountUsername(user.getFirstName() + " " + user.getLastName());
@@ -33,9 +42,16 @@ public class EncryptedPasswordService {
         return encryptedPasswordRepository.save(entryPassword);
     }
 
-    @Transactional 
-    public List<EncryptedPassword> findAll(User user){
-        return encryptedPasswordRepository.findAllByUser(user);
+    @Transactional(readOnly = true)
+    public List<EncryptedPassword> findAll(User user, UUID groupId){
+        if(groupId == null){
+            return encryptedPasswordRepository.findAllByUser(user);
+        }
+        VaultGroup group = vaultGroupRepository
+            .findByIdAndUser(groupId, user)
+            .orElseThrow(() -> new EntryNotFoundException("Group not found"));
+
+            return encryptedPasswordRepository.findAllByUserAndGroup(user, group);
     }
 
     @Transactional

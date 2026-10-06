@@ -2,7 +2,7 @@ package com.restapi.backend.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.restapi.backend.dto.UserDto;
+import com.restapi.backend.dto.response.UserDto;
 import com.restapi.backend.model.User;
 
 @Component

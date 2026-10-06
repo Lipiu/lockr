@@ -1,4 +1,4 @@
-package com.restapi.backend.request.auth;
+package com.restapi.backend.dto.request.auth;
 
 import com.restapi.backend.constants.Constants;
 

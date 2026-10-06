@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.restapi.backend.constants.Constants;
+import com.restapi.backend.dto.request.auth.RegisterRequest;
 import com.restapi.backend.exception.DuplicateEmailException;
 import com.restapi.backend.exception.InvalidPasswordException;
 import com.restapi.backend.model.User;
 import com.restapi.backend.repository.UserRepository;
-import com.restapi.backend.request.auth.RegisterRequest;
 
 import lombok.RequiredArgsConstructor;
 

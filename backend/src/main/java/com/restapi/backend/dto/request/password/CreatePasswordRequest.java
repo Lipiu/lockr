@@ -1,4 +1,6 @@
-package com.restapi.backend.request.password;
+package com.restapi.backend.dto.request.password;
+
+import java.util.UUID;
 
 import com.restapi.backend.constants.Constants;
 
@@ -39,4 +41,6 @@ public class CreatePasswordRequest {
         max = Constants.NOTES_MAX_LENGTH, message = "Notes max size: " + Constants.NOTES_MAX_LENGTH + " characters"
     )
     private String notes;
+
+    private UUID groupId;
 }
