@@ -188,6 +188,7 @@ function PasswordGroup(){
                         style={{paddingLeft: 12 + depth * 16}}
                         onClick={() => setSelectedGroupId(g.id)}
                     >
+                        {depth > 0 && "● "}
                         {g.name}
                     </button>
                     {renderGroups(g.id, depth + 1)}

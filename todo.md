@@ -1,18 +1,22 @@
 # TO DO
 
-### Features to be implemented (70% / 100%)
+### Features to be implemented (50% / 100%)
 + ~~register page (account creation)~~
 + ~~login page~~
 + ~~store and fetch users from db~~
 + ~~ability to store passwords~~
 + ~~password groups based on categories (eg: games, websites, etc)~~
-+ email account confirmation
++ Allow user to see the stored passwords
++ Possibility to update groups (renaming)
++ Possibility to update password entry details
++ login with google
 + password generator (maybe based on the C password generator from GitHub)
 
-### Styling (100% / 100%)
+### Styling (75% / 100%)
 + ~~welcome page~~
 + ~~everything account and login related (register + login + account)~~
 + ~~password page~~
++ password generator page
 
 ### Testing (0% / 100%)
 + implement unit tests
