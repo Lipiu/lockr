@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restapi.backend.auth.request.LoginRequest;
-import com.restapi.backend.auth.request.RegisterRequest;
+import com.restapi.backend.request.auth.LoginRequest;
+import com.restapi.backend.request.auth.RegisterRequest;
 import com.restapi.backend.dto.UserDto;
 import com.restapi.backend.mapper.UserMapper;
 import com.restapi.backend.model.User;
-import com.restapi.backend.service.RegisterService;
-import com.restapi.backend.service.UserService;
+import com.restapi.backend.service.auth.RegisterService;
+import com.restapi.backend.service.auth.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

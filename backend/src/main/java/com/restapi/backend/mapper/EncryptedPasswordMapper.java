@@ -10,6 +10,7 @@ public class EncryptedPasswordMapper {
     public EncryptedPasswordDto toDto(EncryptedPassword encryptedPassword){
         return new EncryptedPasswordDto(
             encryptedPassword.getId(),
+            encryptedPassword.getAccountUsername(),
             encryptedPassword.getTitle(),
             encryptedPassword.getUrl(),
             encryptedPassword.getNotes(),

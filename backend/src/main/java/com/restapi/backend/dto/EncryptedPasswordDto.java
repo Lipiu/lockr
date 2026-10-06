@@ -7,8 +7,9 @@ import lombok.NonNull;
 
 public record EncryptedPasswordDto(
     @NonNull UUID id,
+    @NonNull String accountUsername,
     @NonNull String title,
-    @NonNull String url,
-    @NonNull String notes,
+    String url,
+    String notes,
     @NonNull LocalDateTime createdAt
 ) {}

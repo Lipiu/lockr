@@ -1,14 +1,13 @@
 package com.restapi.backend.request.password;
 
-import com.restapi.backend.model.EncryptedPassword;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data 
 public class CreatePasswordRequest {
-    private String title;
-    private String accountUsername;
-    private EncryptedPassword password;
-    private String url;
-    private String notes;
+    @NotBlank private String title;
+    @NotBlank private String accountUsername;
+    @NotBlank private String password;
+    @NotBlank private String url;
+    @NotBlank private String notes;
 }
