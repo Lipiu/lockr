@@ -3,6 +3,8 @@ package com.restapi.backend.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.restapi.backend.constants.Constants;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,23 +30,23 @@ public class EncryptedPassword {
     @GeneratedValue(strategy=GenerationType.UUID)
     private UUID id;
 
-    @Column(name="title", nullable=false)
+    @Column(name="title", nullable=false, length = Constants.TITLE_MAX_LENGTH)
     private String title;
 
-    @Column(name="username", nullable=false)
+    @Column(name="username", nullable=false, length = Constants.ACCOUNT_USERNAME_MAX_LENGTH)
     private String accountUsername;
 
     @ManyToOne(fetch=FetchType.LAZY, optional=false)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    @Column(name="password_content", nullable=false)
+    @Column(name="password_content", nullable=false, length = Constants.PASSWORD_ENTRY_MAX_LENGTH)
     private String passwordContent;
 
-    @Column(name="url", nullable=true)
+    @Column(name="url", nullable=true, length = Constants.URL_MAX_LENGTH)
     private String url;
 
-    @Column(name="notes", nullable=true)
+    @Column(name="notes", nullable=true, length = Constants.NOTES_MAX_LENGTH)
     private String notes;
 
     @Column(name="created_at", nullable=false)

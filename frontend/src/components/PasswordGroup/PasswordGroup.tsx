@@ -90,12 +90,22 @@ function PasswordGroup(){
         }
     }
 
+    function verifyIfBlank(content: string | null){
+        if(content === null || content.trim() === ""){
+            return "Empty (Default)";
+        }
+        return content;
+    }
+
     return (
         <div className="password-container">
             <div className="toolbar">
                 <button className="btn small" onClick={() => setShowForm(!showForm)}>+ Add Entry</button>
-                <button className="btn small">+ Add Group</button>
+                <button className="btn small">Update Entry</button>
                 <button className="btn small" onClick={handleDelete} disabled={selectedId === null}>- Remove Entry</button>
+                
+                <button className="btn small">+ Add Group</button>
+                <button className="btn small">Update Group</button>
                 <button className="btn small">- Remove Group</button>
             </div>
 
@@ -143,8 +153,8 @@ function PasswordGroup(){
                                 <td>{entry.title}</td>
                                 <td>{entry.accountUsername}</td>
                                 <td>••••••••</td>
-                                <td>{entry.url}</td>
-                                <td>{entry.notes}</td>
+                                <td>{verifyIfBlank(entry.url)}</td>
+                                <td>{verifyIfBlank(entry.notes)}</td>
                                 <td>{new Date(entry.createdAt).toLocaleString()}</td>
                                 <td>{new Date(entry.updatedAt).toLocaleTimeString()}</td>
                             </tr>
