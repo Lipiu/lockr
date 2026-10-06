@@ -1,18 +1,18 @@
 # TO DO
 
-### Features to be implemented (37.5% / 100%)
+### Features to be implemented (70% / 100%)
 + ~~register page (account creation)~~
 + ~~login page~~
 + ~~store and fetch users from db~~
-+ ability to store passwords
-+ password groups based on categories (eg: games, websites, etc)
++ ~~ability to store passwords~~
++ ~~password groups based on categories (eg: games, websites, etc)~~
 + email account confirmation
 + password generator (maybe based on the C password generator from GitHub)
 
-### Styling (0% / 100%)
+### Styling (100% / 100%)
 + ~~welcome page~~
 + ~~everything account and login related (register + login + account)~~
-+ password page
++ ~~password page~~
 
 ### Testing (0% / 100%)
 + implement unit tests
@@ -21,7 +21,7 @@
 + clean up the code
 + follow SOLID principles
 + implement design patterns when possible
-+ get rid of any magic numbers
++ ~~get rid of any magic numbers~~
 
 ### Look for bugs (0% - 100%)
 + Verify every feature of the platform
