@@ -36,7 +36,6 @@ function LoginPage(){
         <div className="auth-page">
             <div className="auth-card">
                 <h1>Welcome back</h1>
-                <p className="auth-subtitle">Log in to your Lockr account</p>
 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <label>
@@ -52,7 +51,7 @@ function LoginPage(){
                     </label>
 
                     {error && <p className="auth-error">{error}</p>}
-
+                    <button className="forgot-password-btn" onClick={() => navigate("/forgot-password")}>Forgot password?</button>
                     <button className="primary-btn" type="submit">Log in</button>
                 </form>
 
@@ -61,7 +60,6 @@ function LoginPage(){
                     <button className="link-btn" type="button" onClick={() => navigate("/register")}>
                         Register here
                     </button>
-                    <p></p>
                     <button className="link-btn" type="button" onClick={() => navigate("/")}>
                         ← Back to home
                     </button>
