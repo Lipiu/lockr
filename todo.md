@@ -17,6 +17,7 @@
 + ~~everything account and login related (register + login + account)~~
 + ~~password page~~
 + password generator page
++ ~~password reset page~~
 
 ### Testing (0% / 100%)
 + implement unit tests
