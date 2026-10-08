@@ -6,7 +6,7 @@
 + ~~store and fetch users from db~~
 + ~~ability to store passwords~~
 + ~~password groups based on categories (eg: games, websites, etc)~~
-+ Allow user to see the stored passwords
++ ~~Allow user to see the stored passwords~~
 + Possibility to update groups (renaming)
 + Possibility to update password entry details
 + login with google

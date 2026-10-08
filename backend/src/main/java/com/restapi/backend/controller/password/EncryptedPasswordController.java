@@ -5,6 +5,7 @@ import com.restapi.backend.mapper.EncryptedPasswordMapper;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.backend.dto.request.password.CreatePasswordRequest;
 import com.restapi.backend.dto.response.password.EncryptedPasswordDto;
+import com.restapi.backend.dto.response.password.PasswordValueDto;
 import com.restapi.backend.model.EncryptedPassword;
 import com.restapi.backend.model.User;
 import com.restapi.backend.service.auth.UserService;
@@ -50,6 +52,13 @@ public class EncryptedPasswordController {
             .map(encryptedPasswordMapper::toDto)
             .toList();
         return ResponseEntity.ok(entries);
+    }
+
+    @GetMapping("/{id}/password")
+    public ResponseEntity<PasswordValueDto> reveal(@PathVariable UUID id, Authentication auth){
+        User user = userService.findByEmail(auth.getName());
+        String plain = encryptedPasswordService.revealPassword(user, id);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(new PasswordValueDto(plain));
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { SyntheticEvent } from "react";
+import hidePasswords from "../../assets/hidePasswords.png";
+import showPasswords from "../../assets/showPasswords.png";
 import "./PasswordGroup.css";
 
 type Entry = {
@@ -32,6 +34,7 @@ function PasswordGroup(){
     const [password, setPassword] = useState("");
     const [url, setUrl] = useState("");
     const [notes, setNotes] = useState("");
+    const [revealed, setRevealed] = useState<Record<string, string>>({})
     const [error, setError] = useState("");
 
 
@@ -92,7 +95,7 @@ function PasswordGroup(){
                 setError("Group is not empty");
             }
             else {
-                setError("Could not delete group");
+                setError("Could not delete group (probably not empty)");
             }
         }
         catch {
@@ -163,9 +166,40 @@ function PasswordGroup(){
         }
     }
 
+    const isRevealed = selectedId !== null && revealed[selectedId] !== undefined;
+    async function togglePasswordVisibility(id: string){
+        if(revealed[id] !== undefined){
+            setRevealed(prev => {
+                const next = { ...prev };
+                delete next[id];
+                return next;
+            });
+            return;
+        }
+        try{
+            const res = await fetch(`${API}/${id}/password`, {
+                credentials: "include"
+            });
+            if(res.ok){
+                const data = await res.json();
+                setRevealed(prev => ({ ...prev, [id]: data.password }));
+            }
+            else{
+                setError("Could not load password");
+            }
+        }
+        catch{
+            setError("Could not reach the server");
+        }
+    }
+
     useEffect(() => {
         loadGroups();
     }, []);
+
+    useEffect(() => {
+        setRevealed({});
+    }, [selectedId]);
 
     useEffect(() => {
         loadEntries();
@@ -206,7 +240,18 @@ function PasswordGroup(){
                 <button className="btn small" onClick={handleAddGroup}>+ Add Group</button>
                 <button className="btn small">Update Group</button>
                 <button className="btn small" onClick={handleDeleteGroup} disabled={selectedGroupId === null}>- Remove Group</button>
-
+                <button
+                    className="btn small icon-btn"
+                    onClick={() => selectedId && togglePasswordVisibility(selectedId)}
+                    disabled={selectedId === null}
+                    title={isRevealed ? "Hide password" : "Show password"}    
+                >
+                    <img
+                        className="eye-icon"
+                        src={isRevealed ? hidePasswords : showPasswords}
+                        alt={isRevealed ? "Hide password" : "Show password"}
+                    />
+                </button>
                 {error && <span className="entry-error">{error}</span>}
             </div>
 
@@ -248,6 +293,7 @@ function PasswordGroup(){
                             <th>Notes</th>
                             <th>Created</th>
                             <th>Modified</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -259,7 +305,7 @@ function PasswordGroup(){
                             >
                                 <td>{entry.title}</td>
                                 <td>{entry.accountUsername}</td>
-                                <td>••••••••</td>
+                                <td>{revealed[entry.id] ?? "••••••••"}</td>
                                 <td>{verifyIfBlank(entry.url)}</td>
                                 <td>{verifyIfBlank(entry.notes)}</td>
                                 <td>{new Date(entry.createdAt).toLocaleString()}</td>

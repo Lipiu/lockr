@@ -60,4 +60,13 @@ public class EncryptedPasswordService {
             .orElseThrow(() -> new EntryNotFoundException("Entry not found"));
         encryptedPasswordRepository.delete(entry);
     }
+
+    @Transactional(readOnly = true)
+    public String revealPassword(User user, UUID id){
+        EncryptedPassword entry = encryptedPasswordRepository
+            .findByIdAndUser(id, user)
+            .orElseThrow(() -> new EntryNotFoundException("Entry not found"));
+
+        return encryptionService.decrypt(entry.getPasswordContent());
+    }
 }
