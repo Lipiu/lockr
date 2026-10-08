@@ -212,6 +212,11 @@ function PasswordGroup(){
         return content;
     }
 
+    function normalizeUrl(content: string): string {
+        const trimmed = content.trim();
+        return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    }
+
     function renderGroups(parentId: string | null, depth: number){
         return groups
             .filter(g => g.parentId === parentId)
@@ -293,7 +298,6 @@ function PasswordGroup(){
                             <th>Notes</th>
                             <th>Created</th>
                             <th>Modified</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -306,8 +310,24 @@ function PasswordGroup(){
                                 <td>{entry.title}</td>
                                 <td>{entry.accountUsername}</td>
                                 <td>{revealed[entry.id] ?? "••••••••"}</td>
-                                <td>{verifyIfBlank(entry.url)}</td>
-                                <td>{verifyIfBlank(entry.notes)}</td>
+                                <td className="td-url">
+                                    {entry.url && entry.url.trim() !== "" ? (
+                                        <a
+                                            className="a-url"
+                                            href={normalizeUrl(entry.url)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {entry.url}
+                                        </a>
+                                    ) : (
+                                        "Empty (Default)"
+                                    )}
+                                </td>
+                                <td>{
+                                    verifyIfBlank(entry.notes)
+                                }</td>
                                 <td>{new Date(entry.createdAt).toLocaleString()}</td>
                                 <td>{new Date(entry.updatedAt).toLocaleTimeString()}</td>
                             </tr>
