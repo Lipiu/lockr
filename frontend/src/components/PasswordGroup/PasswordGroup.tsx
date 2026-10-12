@@ -81,6 +81,37 @@ function PasswordGroup(){
         }
     }
 
+    async function handleUpdateGroup(){
+        if(selectedGroupId === null){
+            return;
+        }
+
+        const current = groups.find(g => g.id === selectedGroupId);
+        const name = window.prompt("New group name: ", current?.name ?? "");
+        if(name === null || name.trim() === "")
+            return;
+        
+        try {
+            const res = await fetch(`${GROUPS_API}/${selectedGroupId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({ name }),
+            });
+            if(res.ok){
+                loadGroups();
+            }
+            else {
+                setError("Could not rename group");
+            }
+        }
+        catch {
+            setError("Could not reach server");
+        }
+    }
+
     async function handleDeleteGroup(){
         if(selectedGroupId === null){
             return;
@@ -287,7 +318,7 @@ function PasswordGroup(){
                 <button className="btn small" onClick={handleEntryDelete} disabled={selectedId === null}>- Remove Entry</button>
                 
                 <button className="btn small" onClick={handleAddGroup}>+ Add Group</button>
-                <button className="btn small">Update Group</button>
+                <button className="btn small" onClick={handleUpdateGroup} disabled={selectedGroupId === null}>Update Group</button>
                 <button className="btn small" onClick={handleDeleteGroup} disabled={selectedGroupId === null}>- Remove Group</button>
                 <button
                     className="btn small icon-btn"

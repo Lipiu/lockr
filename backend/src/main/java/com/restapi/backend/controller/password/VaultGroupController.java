@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.backend.dto.request.password.CreateVaultGroupRequest;
+import com.restapi.backend.dto.request.password.UpdateVaultGroupRequest;
 import com.restapi.backend.dto.response.password.VaultGroupDto;
 import com.restapi.backend.mapper.VaultGroupMapper;
 import com.restapi.backend.model.User;
@@ -51,5 +53,12 @@ public class VaultGroupController {
         User user = userService.findByEmail(auth.getName());
         vaultGroupService.delete(user, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VaultGroupDto> update(@PathVariable UUID id, @Valid @RequestBody UpdateVaultGroupRequest request, Authentication auth){
+        User user = userService.findByEmail(auth.getName());
+        VaultGroup updatedVaultGroup = vaultGroupService.updateVaultGroup(user, id, request);
+        return ResponseEntity.ok(vaultGroupMapper.toDto(updatedVaultGroup));
     }
 }

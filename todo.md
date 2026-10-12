@@ -1,6 +1,6 @@
 # TO DO
 
-### Features to be implemented (50% / 100%)
+### Features to be implemented (70% / 100%)
 + ~~register page (account creation)~~
 + ~~login page~~
 + ~~store and fetch users from db~~
@@ -10,7 +10,7 @@
 + Possibility to update groups (renaming)
 + ~~Possibility to update password entry details~~
 + login with google
-+ password generator (maybe based on the C password generator from GitHub)
++ password generator (maybe based on the C password generator from GitHub) -> optional
 
 ### Styling (75% / 100%)
 + ~~welcome page~~

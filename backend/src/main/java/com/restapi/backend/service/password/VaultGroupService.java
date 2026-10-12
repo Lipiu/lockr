@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.restapi.backend.dto.request.password.CreateVaultGroupRequest;
+import com.restapi.backend.dto.request.password.UpdateVaultGroupRequest;
 import com.restapi.backend.exception.EntryNotFoundException;
 import com.restapi.backend.exception.GroupNotEmptyException;
+import com.restapi.backend.exception.GroupNotFoundException;
 import com.restapi.backend.model.User;
 import com.restapi.backend.model.VaultGroup;
 import com.restapi.backend.repository.EncryptedPasswordRepository;
@@ -52,5 +54,14 @@ public class VaultGroupService {
             throw new GroupNotEmptyException("Group is not empty");
         }
         vaultGroupRepository.delete(group);
+    }
+
+    @Transactional
+    public VaultGroup updateVaultGroup(User user, UUID id, UpdateVaultGroupRequest request){
+        VaultGroup group = vaultGroupRepository.findByIdAndUser(id, user)
+            .orElseThrow(() -> new GroupNotFoundException("Group not found"));
+        group.setName(request.getName().trim());
+        
+        return group;
     }
 }

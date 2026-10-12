@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.restapi.backend.dto.request.password.CreatePasswordRequest;
 import com.restapi.backend.dto.request.password.UpdatePasswordRequest;
 import com.restapi.backend.exception.EntryNotFoundException;
+import com.restapi.backend.exception.GroupNotFoundException;
 import com.restapi.backend.model.EncryptedPassword;
 import com.restapi.backend.model.User;
 import com.restapi.backend.model.VaultGroup;
@@ -80,7 +81,7 @@ public class EncryptedPasswordService {
         if(request.getGroupId() != null){
             VaultGroup group = vaultGroupRepository
                 .findByIdAndUser(request.getGroupId(), user)
-                .orElseThrow(() -> new EntryNotFoundException("Ground not found"));
+                .orElseThrow(() -> new GroupNotFoundException("Group not found"));
             entry.setGroup(group);
         }
         else{

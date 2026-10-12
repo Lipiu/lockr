@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.restapi.backend.constants.Constants;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
