@@ -8,7 +8,7 @@
 + ~~password groups based on categories (eg: games, websites, etc)~~
 + ~~Allow user to see the stored passwords~~
 + Possibility to update groups (renaming)
-+ Possibility to update password entry details
++ ~~Possibility to update password entry details~~
 + login with google
 + password generator (maybe based on the C password generator from GitHub)
 

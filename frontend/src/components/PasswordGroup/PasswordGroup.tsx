@@ -12,6 +12,7 @@ type Entry = {
     notes: string | null;
     createdAt: string;
     updatedAt: string;
+    groupId: string | null;
 };
 
 type Group = {
@@ -34,7 +35,9 @@ function PasswordGroup(){
     const [password, setPassword] = useState("");
     const [url, setUrl] = useState("");
     const [notes, setNotes] = useState("");
-    const [revealed, setRevealed] = useState<Record<string, string>>({})
+    const [revealed, setRevealed] = useState<Record<string, string>>({});
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editGroupId, setEditGroupId] = useState<string | null>(null);
     const [error, setError] = useState("");
 
 
@@ -138,27 +141,61 @@ function PasswordGroup(){
         }
     }
 
+    function resetForm(){
+        setTitle("");
+        setAccountUsername("");
+        setPassword("");
+        setUrl("");
+        setNotes("");
+        setEditingId(null);
+        setEditGroupId(null);
+        setShowForm(false);
+    }
+
+    function handleStartEdit(){
+        const entry = entries.find(e => e.id === selectedId);
+        if(!entry)
+            return;
+        setTitle(entry.title);
+        setAccountUsername(entry.accountUsername);
+        setPassword("");
+        setUrl(entry.url ?? "");
+        setNotes(entry.notes ?? "");
+        setEditingId(entry.id);
+        setEditGroupId(entry.groupId);
+        setShowForm(true);
+    }
+
     async function handleSubmit(e: SyntheticEvent<HTMLFormElement>){
         e.preventDefault();
         setError("");
+        const isEdit = editingId !== null;
         try{
-            const res = await fetch(API, {
-                method: "POST",
+            const res = await fetch(isEdit ? `${API}/${editingId}` : API, {
+                method: isEdit ? "PUT" : "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ title, accountUsername, password, url, notes, groupId: selectedGroupId }),
+                body: JSON.stringify({ 
+                    title, 
+                    accountUsername, 
+                    password, 
+                    url, 
+                    notes, 
+                    groupId: isEdit ? editGroupId : selectedGroupId,
+                }),
             });
             if(res.ok){
-                setTitle("");
-                setAccountUsername("");
-                setPassword("");
-                setUrl("");
-                setNotes("");
-                setShowForm(false);
+                resetForm();
+                setRevealed({});
                 loadEntries();
             }
             else{
-                setError("Could not save entry");
+                if(isEdit){
+                    setError("Could not update entry");
+                }
+                else {
+                    setError("Could not save entry");
+                }
             }
         }
         catch{
@@ -238,8 +275,15 @@ function PasswordGroup(){
     return (
         <div className="password-container">
             <div className="toolbar">
-                <button className="btn small" onClick={() => setShowForm(!showForm)}>+ Add Entry</button>
-                <button className="btn small">Update Entry</button>
+                <button className="btn small" onClick={() => {
+                    if(showForm)
+                        resetForm;
+                    else
+                        setShowForm(true);
+                }}>
+                    Add Entry
+                </button>
+                <button className="btn small" onClick={handleStartEdit} disabled={selectedId === null}>Update Entry</button>
                 <button className="btn small" onClick={handleEntryDelete} disabled={selectedId === null}>- Remove Entry</button>
                 
                 <button className="btn small" onClick={handleAddGroup}>+ Add Group</button>
@@ -273,17 +317,46 @@ function PasswordGroup(){
             <div className="entries">
                 {showForm && (
                     <form className="entry-form" onSubmit={handleSubmit}>
-                        <input placeholder="Title" required value={title}
-                               onChange={(e) => setTitle(e.target.value)} />
-                        <input placeholder="Username" required value={accountUsername}
-                               onChange={(e) => setAccountUsername(e.target.value)} />
-                        <input type="password" autoComplete="new-password" placeholder="Password" required value={password}
-                               onChange={(e) => setPassword(e.target.value)} />
-                        <input placeholder="URL" value={url}
-                               onChange={(e) => setUrl(e.target.value)} />
-                        <input placeholder="Notes" value={notes}
-                               onChange={(e) => setNotes(e.target.value)} />
-                        <button className="btn small filled" type="submit">Save</button>
+                        <input 
+                            placeholder="Title" 
+                            required value={title}
+                            onChange={(e) => setTitle(e.target.value)} 
+                        />
+                        <input 
+                            placeholder="Username" required value={accountUsername}
+                            onChange={(e) => setAccountUsername(e.target.value)} 
+                        />
+                        
+                        <input 
+                            type="password" 
+                            autoComplete="new-password" 
+                            placeholder={editingId ? "New password" : "Password"}
+                            required={editingId === null}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} 
+                        />
+                        
+                        <input 
+                            placeholder="URL" value={url}
+                            onChange={(e) => setUrl(e.target.value)} 
+                        />
+                        
+                        <input 
+                            placeholder="Notes" value={notes}
+                            onChange={(e) => setNotes(e.target.value)} 
+                        />
+                        
+                        <button 
+                            className="btn small filled" 
+                            type="submit">
+                                {editingId ? "Update" : "Save"}
+                            </button>
+                        <button 
+                            className="btn small filled" 
+                            type="button" 
+                            onClick={resetForm}>
+                                Cancel
+                        </button>
                         {error && <span className="entry-error">{error}</span>}
                     </form>
                 )}

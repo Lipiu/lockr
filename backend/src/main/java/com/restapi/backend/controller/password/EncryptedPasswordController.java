@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.backend.dto.request.password.CreatePasswordRequest;
+import com.restapi.backend.dto.request.password.UpdatePasswordRequest;
 import com.restapi.backend.dto.response.password.EncryptedPasswordDto;
 import com.restapi.backend.dto.response.password.PasswordValueDto;
 import com.restapi.backend.model.EncryptedPassword;
@@ -66,5 +68,12 @@ public class EncryptedPasswordController {
         User user = userService.findByEmail(auth.getName());
         encryptedPasswordService.deletePassword(user, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EncryptedPasswordDto> update(@PathVariable UUID id, @Valid @RequestBody UpdatePasswordRequest request, Authentication auth){
+        User user = userService.findByEmail(auth.getName());
+        EncryptedPassword updatedPasswordEntry = encryptedPasswordService.updatePassword(user, id, request);
+        return ResponseEntity.ok(encryptedPasswordMapper.toDto(updatedPasswordEntry));
     }
 }

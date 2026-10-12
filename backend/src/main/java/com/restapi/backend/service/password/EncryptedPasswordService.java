@@ -1,5 +1,6 @@
 package com.restapi.backend.service.password;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.restapi.backend.dto.request.password.CreatePasswordRequest;
+import com.restapi.backend.dto.request.password.UpdatePasswordRequest;
 import com.restapi.backend.exception.EntryNotFoundException;
 import com.restapi.backend.model.EncryptedPassword;
 import com.restapi.backend.model.User;
@@ -68,5 +70,32 @@ public class EncryptedPasswordService {
             .orElseThrow(() -> new EntryNotFoundException("Entry not found"));
 
         return encryptionService.decrypt(entry.getPasswordContent());
+    }
+
+    @Transactional
+    public EncryptedPassword updatePassword(User user, UUID id, UpdatePasswordRequest request){
+        EncryptedPassword entry = encryptedPasswordRepository
+            .findByIdAndUser(id, user)
+            .orElseThrow(() -> new EntryNotFoundException("Entry not found"));
+        if(request.getGroupId() != null){
+            VaultGroup group = vaultGroupRepository
+                .findByIdAndUser(request.getGroupId(), user)
+                .orElseThrow(() -> new EntryNotFoundException("Ground not found"));
+            entry.setGroup(group);
+        }
+        else{
+            entry.setGroup(null);
+        }
+        entry.setTitle(request.getTitle());
+        entry.setAccountUsername(request.getAccountUsername());
+
+        if(request.getPassword() != null && !request.getPassword().isBlank()){
+            entry.setPasswordContent(encryptionService.encrypt(request.getPassword()));
+        }
+        entry.setUrl(request.getUrl());
+        entry.setNotes(request.getNotes());
+        entry.setUpdatedAt(LocalDateTime.now());
+
+        return entry;
     }
 }
