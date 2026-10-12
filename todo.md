@@ -1,6 +1,6 @@
 # TO DO
 
-### Features to be implemented (100% / 100%)
+### Features to be implemented (88% / 100%)
 + ~~register page (account creation)~~
 + ~~login page~~
 + ~~store and fetch users from db~~
