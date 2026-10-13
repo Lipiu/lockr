@@ -3,7 +3,7 @@ import "./Home.css";
 import { useEffect, useState } from "react";
 import LiveTime from "../LiveTime/LiveTime";
 import lockrLogo from '../../assets/lockrLogo.png';
-import PasswordGroup from "../PasswordGroup/PasswordGroup";
+import Vault from "../Vault/Vault";
 
 function Home(){
     const navigate = useNavigate();
@@ -72,21 +72,15 @@ function Home(){
                 <LiveTime />
                 {
                     isLoggedIn ? (
+                        <>
                         <p>// Hello, {username}! \\</p>
+                        <Vault></Vault>
+                        </>
                     ) : (
                         <p>You are logged out...</p>
                     )
                 }
             </main>
-            <>
-            {
-                isLoggedIn ? (
-                    <PasswordGroup/>
-                ) : (
-                    null
-                )
-            }
-            </>
 
             <footer>
                 <p>Lockr - password storage made easy</p>

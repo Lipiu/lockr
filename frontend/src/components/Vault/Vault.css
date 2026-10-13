@@ -1,0 +1,199 @@
+
+.vault-layout {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    width: 100%;
+    height: 800px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
+
+.vault-main {
+    flex: 3 1 0;
+    min-width: 0;
+    height: 100%;
+}
+
+.vault-side {
+    flex: 2 1 0;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.vault-side .generator {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.generator {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    min-height: 0;
+    padding: 14px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.generator h3,
+.generator h4 {
+    margin: 0;
+}
+
+.generator-output {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.generator-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.strength {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.strength-track {
+    flex: 1;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.strength-bar.weak {
+    background: #b00020;
+}
+
+.strength-bar.fair {
+    background: #e08a00;
+}
+
+.strength-bar.good {
+    background: #7aa800;
+}
+
+.strength-bar.strong {
+    background: #1a8f3c;
+}
+
+.strength-label {
+    min-width: 52px;
+    font-size: 0.85rem;
+}
+
+.generator-length {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.generator-length input[type="range"] {
+    flex: 1;
+    min-width: 0;
+    accent-color: black;
+}
+
+.generator-length-number {
+    width: 56px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.generator-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    text-transform: capitalize;
+}
+
+.generator-options input[type="checkbox"] {
+    accent-color: black;
+}
+
+.generator-recent ul {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.generator-recent li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.generator-recent code {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.generator-empty {
+    margin: 6px 0 0;
+    color: gray;
+    font-size: 0.85rem;
+}
+
+
+@media (max-width: 1100px) {
+    .vault-layout {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .vault-main {
+        flex: none;
+        width: 100%;
+        height: 800px;
+    }
+
+    .vault-side {
+        flex: none;
+        width: 100%;
+        height: 600px;
+    }
+}
+
+@media (max-width: 700px) {
+    .vault-layout {
+        gap: 12px;
+        height: auto;
+    }
+
+    .vault-main {
+        height: 85vh;
+    }
+
+    .vault-side {
+        height: 600px;
+    }
+}
+
