@@ -119,19 +119,6 @@ Lockr/
 └── README.md
 ```
 
-## 🔒 Security
-
-Lockr manages sensitive credential data, so secure configuration and deployment are important.
-
-- Keep encryption keys and database credentials out of source control.
-- Use HTTPS in production.
-- Store account passwords using a suitable password-hashing algorithm.
-- Protect stored credentials with encryption appropriate to the application's design.
-- Never log passwords, encryption keys, or other sensitive data.
-- Keep dependencies updated.
-
-The actual security guarantees depend on the application's implementation and configuration.
-
 ## Contributing
 
 Contributions and suggestions are welcome!
