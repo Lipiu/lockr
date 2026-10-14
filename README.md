@@ -23,9 +23,13 @@ The backend handles authentication, password entry management, group management,
 
 The screenshots below are stored in the `assets/` directory.
 
-| 🏠 Dashboard | 🔓 Login | 📝 Registration |
-| --- | --- | --- |
-| ![Lockr dashboard](./assets/homepage.png) | ![Lockr login page](./assets/login.png) | ![Lockr registration page](./assets/register.png) |
+| Dashboard |
+| --------- |
+| ![](assets/homepage.png) |
+
+| Login | Register | 
+|--------|----------|
+| ![](assets/login.png) | ![](assets/register.png) |
 
 ## 📋 Prerequisites
 
